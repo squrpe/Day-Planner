@@ -40,33 +40,52 @@ $(document).ready(function() {
 
     $('.saveBtn').on('click', function(){
 
-        console.log(savedEvents);
-
         var descValue = $(this).siblings('.div-block').val();
         var descTime = $(this).siblings('.div-block').data('hour');
         //var descTime = parseInt($(this).parent().attr('id'));
 
-        savedEvents[descTime - 9] = descValue;
+        //savedEvents[descTime - 9] = descValue;
 
-        localStorage.setItem('Saved Input', savedEvents);
+        //localStorage.setItem('Saved Input', JSON.stringify(savedEvents));
+        localStorage.setItem(descTime, descValue);
         console.log('Save: '+ descValue + ' at ' + descTime + '.');
-        console.log(savedEvents);
+
+        //console.log(savedEvents);
+
+        getData();
     })
 
     function getData() {
 
-        if (localStorage.getItem('Saved Input') === null) {
+        //var localEvents = localStorage.getItem('13');
+        //console.log(localEvents);
 
-        } else {
-            savedEvents = localStorage.getItem('Saved Input').split(',');
-        }
+        //$('#div13 .description').val(localEvents);
 
-        console.log(savedEvents);
+        $('textarea').each(function() {
+            console.log($(this).data('hour'));
 
-        //for (var i = 0; i < savedEvents.length; i++) {
-            //var textContent = ? ;
-            //textContent.val(savedEvents[i]);
-        //}
+            var localEvents = localStorage.getItem($(this).data('hour'));
+            console.log(localEvents);
+            $(this).val(localEvents);
+        })
+
+        // var localEvents = localStorage.getItem(savedEvents);
+
+        // if (localEvents === null) {
+
+        // } else {
+        //     //savedEvents = localStorage.getItem('Saved Input').split(',');
+
+        //     savedEvents = JSON.parse(localEvents);
+        // }
+
+        // console.log('New Local Events:');
+        // console.log(savedEvents);
+
+        // for (var i = 0; i < savedEvents.length; i++) {
+        //     $('#div' + (i+9)).val(savedEvents[i]);
+        // }
 
         //savedEvents.forEach(hour => {
             //$('textarea.data(hour) .div-block').val(localstorage.getItem())
@@ -79,16 +98,14 @@ $(document).ready(function() {
         var confirm = window.confirm('Please confirm whether you want to clear your schedule.');
 
         if (confirm === true) {
-            var savedEvents = ['','','','','','','','',''];
-            localStorage.setItem('Saved Input', savedEvents);
-
-            console.log(savedEvents);
+            localStorage.clear();
             getData();
         }
 
     })
 
     getData();
+
     checkTime();
 
 });
